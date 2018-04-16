@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Unleashing Screen Saver</title>
+    <link rel="stylesheet" href="_/css/main.css">
+    <style>
+        body { background-color: rgb(29, 29, 29); }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,900" rel="stylesheet">
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src="_/js/main.js"></script>
+    <script src="_/js/params.js"></script>
+    <!-- polyfills -->
+    <script src="_/js/rAF.js"></script> <!-- requestAnimationFrame -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+</head>
+<body>
+    <!-- SSG LOADER -->
+    <div id="ssg-loader"><h1>ScreenSaverGallery</h1></div>
+    <!-- MAIN IFRAME -->
+    <iframe src="" frameborder="0"></iframe>
+    <!-- DESCRIPTION OF CURRENT SCREENSAVER -->
+    <div id="description"></div>
+
+    <script>
+        (function(){
+            // set today
+            var today = moment().format('YYYY-MM-DD');
+            // fake from url param 'date' today (test purpose)
+            if (getAllUrlParams(window.url).date) {
+                var fakeToday = getMoment(getAllUrlParams(window.url).date);
+                if (moment(fakeToday).isValid()) {
+                    today = fakeToday;
+                }
+                console.log('fakeToday', fakeToday);
+            }
+            // today = fakeToday; // <-- uncomment when testing
+    
+            // select iframe
+            var iframe = document.querySelector('iframe');
+            // select description
+            var description = document.querySelector('#description');
+    
+            /* ------------------- TIMETABLE OF SCREENSAVERS ------------------- */
+            // set timetable { date: {url: '', name: ''}}
+            var timetable = {};
+            timetable[getMoment('03-30')] = {url: 'screensavers/youtube-test', name: 'YouTube TEST'};
+            timetable[getMoment('03-31')] = {url: 'screensavers/intro', name: 'INTRO FOR THE PROJECT: UNLEASHING SCREENSAVER'}; // only for first day purpose
+            timetable[getMoment('04-01')] = {url: 'screensavers/intro', name: 'INTRO FOR THE PROJECT: UNLEASHING SCREENSAVER'};
+            timetable[getMoment('04-02')] = {url: 'screensavers/uncounscious-analogy', name: 'UNCONSCIOUS ANALOGY: <small>Faculty of Art and Design, Jan Evangelista Purkyně University in Ústí nad Labem [CZ]</small>'};
+            timetable[getMoment('04-03')] = {url: 'screensavers/13g9p7s', name: '13 gestures - 9 people - 7 states: <small>Faculty of Art and Design, Jan Evangelista Purkyně University in Ústí nad Labem [CZ]</small>'};
+            timetable[getMoment('04-04')] = {url: 'screensavers/anijam', name: 'ANIJAM: <small>Tomas Bata University In Zlin Faculty of Multimedia Communications [CZ]</small>'};
+            timetable[getMoment('04-05')] = {url: 'screensavers/algorithmic-art', name: 'Algorithmic art theory & practice: <small>Theory of interactive media, Masaryk University, Faculty of Arts, Brno [CZ]</small>'};
+            timetable[getMoment('04-06')] = {url: 'screensavers/revisited', name: 'Computer Graphic Re-visited: <small>Theory of interactive media, Masaryk University, Faculty of Arts, Brno [CZ]</small>'};
+            
+
+            // ... TODO
+    
+    
+            /* --------------- SELECT SCREENSAVER FROM TIMETABLE --------------- */
+            // set iframe src
+            iframe.src = timetable[today].url;
+    
+            // set description content
+            description.innerHTML = '<strong>' + timetable[today].name + '</strong> (credited www.unleashing.tc.columbia.edu)';
+    
+            // get moment date
+            function getMoment(date) {
+                return moment('2018-' + date).format('YYYY-MM-DD');
+            }
+            // document loaded
+            // window.addEventListener('load', function(){
+                // hide description
+            hideDescription('#description', 15*1000); // 20s            
+        })();
+
+        // ssg-loader colorify
+        var loader = document.querySelector('#ssg-loader');
+        setInterval(function(){
+            changeColorForEachChild(loader);
+        }, 800);
+        changeColorForEachChild(loader);
+    </script>
+</body>
+</html>
